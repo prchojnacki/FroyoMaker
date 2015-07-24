@@ -1,0 +1,72 @@
+<html>
+	<head>
+		<title>Froyo Machine!</title>
+		<style>
+			#machine {
+				float:left;
+				width:40%;
+				border:3px outset gray;
+			}
+			div#power > img {
+				float:left;
+			}
+			.btn {
+				float:left;
+				clear:right;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Froyo-maker 2000e</h1>
+		<div id="machine">
+			<div id="power">
+				<img src="img/power.png" class="power">
+			</div>
+			<button id="vanilla" class="btn">Vanilla</button><br>
+			<button id="chocolate" class="btn">Chocolate</button><br>
+			<button id="swirl" class="btn">Swirl</button><br>
+		</div>
+		<div id="conveyor_belt" style="float:left">
+			<img src="img/conveyor.png">
+		</div>
+		<script>
+			var powerButton = document.getElementById('power'),
+				buttons = document.getElementsByClassName('btn'),
+				makeIceCream = function (item) {
+						console.log(item.target.id);
+						iceCreamMaker(item.target.id);
+					},
+				conveyor_belt = document.getElementById('conveyor_belt'),
+				isOn = false;
+
+			powerButton.addEventListener('click', function(event){
+				if (isOn) { //user turns machine off
+					event.target.parentElement.innerHTML = '<img src="img/power.png">' //change power image to power off
+					isOn = false;
+					for (var i = 0; i < buttons.length; i++) {
+						buttons[i].removeEventListener('click',makeIceCream)
+					} //unbind event listeners
+				}
+				else { //user turns machine on
+					event.target.parentElement.innerHTML = '<img src="img/power_on.png">' //change power image to power_on
+					for (var i = 0; i < buttons.length; i++) {
+						buttons[i].addEventListener('click', makeIceCream)
+					} //bind event listeners
+					isOn = true;
+				}
+				
+			});
+
+			function iceCreamMaker(flavor){
+				// create an img tag
+				var newIceCream = document.createElement('img');
+				// set it's src attribute to be img/flavor.jpg
+				newIceCream.src = "img/" + flavor + ".jpg";
+				newIceCream.style.width = '300px';
+				// append it to the conveyor belt
+				conveyor_belt.appendChild(newIceCream);
+			}
+		</script>
+	</body>
+</html>
+
